@@ -45,7 +45,7 @@ const Login = ({ ...props }) => {
         setLoading(true);
         const response: IResponseData = await client.post(baseurl, { email: inputs.email });
         setLoading(false);
-        if (response.error) {
+        if (response.error || response.status === 401) {
             toast(response?.message || 'Login Failed!')
             return;
         }

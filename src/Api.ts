@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { isLoggedIn } from './Utils/Login';
 
 
 const client = axios.create({
@@ -13,8 +12,8 @@ Add only the routes(pages) where API is being called from that respective page a
 */
 
 const AUTH_ROUTES: string[] = [
-  '/login',
-  '/singup'
+  '/',
+  '/signup'
 ];
 
 const PUBLIC_ROUTES: string[] = [
@@ -26,8 +25,8 @@ client.interceptors.request.use(
     let authRoutes = AUTH_ROUTES.includes(request.url);
     let publicRoutes = PUBLIC_ROUTES.includes(request.url);
     if (!authRoutes && !publicRoutes) {
-      const token = isLoggedIn();
-      request.headers['Authorization'] = `${token}`;
+      // const token = isLoggedIn();
+      request.headers['Authorization'] = `token`;
     }
     return request;
   },
@@ -47,7 +46,7 @@ client.interceptors.response.use(
   (error: any) => {
     if (error?.response?.status === 401) {
       sessionStorage.removeItem('userapp');
-      window.location.href = '/';
+      // window.location.href = '/';
     }
     return Promise.resolve(error?.response?.data);
   },

@@ -19,8 +19,6 @@ const AUTH_ROUTES: string[] = [
 
 const PUBLIC_ROUTES: string[] = [
   '/',
-  '/plans',
-  '/get-coverage',
 ];
 
 client.interceptors.request.use(
@@ -34,24 +32,24 @@ client.interceptors.request.use(
     return request;
   },
   (error: any) => {
-    return Promise.reject(error);
+    return Promise.resolve(error);
   },
 );
 
 client.interceptors.response.use(
   (response: any) => {
     if (response.error) {
-      return Promise.reject(response.data);
+      return Promise.resolve(response.data);
     } else {
       return Promise.resolve(response.data);
     }
   },
   (error: any) => {
     if (error?.response?.status === 401) {
-      sessionStorage.removeItem('pwb_token');
+      sessionStorage.removeItem('userapp');
       window.location.href = '/';
     }
-    return Promise.reject(error?.response?.data);
+    return Promise.resolve(error?.response?.data);
   },
 );
 

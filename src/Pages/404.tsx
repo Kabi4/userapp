@@ -1,4 +1,4 @@
-import { Card, Row, Col, Input, } from 'antd';
+import { Card, Row, Col, } from 'antd';
 
 const ErrorPage = () => {
     return (

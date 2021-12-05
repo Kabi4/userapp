@@ -14,10 +14,9 @@ function App({ loginUser, ...props }: any) {
     (async () => {
       let data: string | null = localStorage.getItem("userapp");
       if (data) {
-        let dataTotal: { name: string, token: string } = await JSON.parse(data);
+        let dataTotal: { name: string, token: string, dob: string } = await JSON.parse(data);
         if (typeof dataTotal !== typeof '') {
-          console.log(dataTotal);
-          loginUser({ name: dataTotal?.name, token: dataTotal?.token });
+          loginUser({ name: dataTotal?.name, token: dataTotal?.token, dob: dataTotal?.dob });
         }
       }
       setLoading(false);
@@ -32,15 +31,15 @@ function App({ loginUser, ...props }: any) {
           :
           <Loader />
       }
-      <ToastContainer />
+      <ToastContainer autoClose={3000} />
     </div>
   );
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    loginUser: async ({ name, token }: { name: string, token: string }) => {
-      await dispatch(LOGIN({ name, token }));
+    loginUser: async ({ name, token, dob }: { name: string, token: string, dob: string }) => {
+      await dispatch(LOGIN({ name, token, dob }));
     },
   };
 };

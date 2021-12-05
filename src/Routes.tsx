@@ -9,19 +9,22 @@ import EditUser from './Pages/EditUser'
 import UserTable from './Pages/UserTable'
 import { PageHeader, Button, } from 'antd';
 import { connect } from 'react-redux'
+import { LOGOUT } from './Store/ActionCreators/ActionCreator'
 
 interface IHeader {
-    name?: string | null
+    name?: string | null,
+    logoutUser?: any
 }
 
-const Header = ({ name }: IHeader) => {
+const Header = ({ name, logoutUser }: IHeader) => {
     const history = useHistory();
     return (<PageHeader
         ghost={false}
-        onBack={() => history.goBack()}
+        onBack={() => history.push(AppRoutes.users)}
         title={`Hii, ${name}`}
         extra={[
             <Button onClick={() => { history.push(AppRoutes.add) }} key="3">Add User</Button>,
+            <Button onClick={() => { logoutUser(); history.push(AppRoutes.login) }} key="3" type='primary' >Logout</Button>
         ]}
     />)
 };
@@ -31,10 +34,11 @@ const Header = ({ name }: IHeader) => {
 
 interface IProps {
     token?: string | null,
-    name?: string | null
+    name?: string | null,
+    logoutUser: any
 }
 
-const Routes = ({ token = null, name = null }: IProps) => {
+const Routes = ({ token = null, name = null, logoutUser = null }: IProps) => {
     let data: string | null = null;
     if (token === null) {
         data = localStorage.getItem("userapp");
@@ -58,16 +62,20 @@ const Routes = ({ token = null, name = null }: IProps) => {
                     :
                     <Switch>
                         <Route path={AppRoutes.users} exact>
-                            <Header name={name} />
+                            <Header logoutUser={logoutUser} name={name} />
                             <UserTable />
                         </Route>
                         <Route path={`${AppRoutes.edit}/:id`} exact>
-                            <Header name={name} />
+                            <Header logoutUser={logoutUser} name={name} />
                             <EditUser />
                         </Route>
                         <Route path={AppRoutes.add} exact>
-                            <Header name={name} />
+                            <Header logoutUser={logoutUser} name={name} />
                             <AddUser />
+                        </Route>
+                        <Route path={AppRoutes.notFound} exact>
+                            <Header logoutUser={logoutUser} name={name} />
+                            <ErrorPage />
                         </Route>
                         <Route path='*'>
                             <ErrorPage />
@@ -85,4 +93,13 @@ const mapStateToProps = (state: any) => {
     };
 };
 
-export default connect(mapStateToProps, null)(Routes);
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        logoutUser: async () => {
+            await dispatch(LOGOUT());
+        },
+    };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Routes);

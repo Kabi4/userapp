@@ -18,7 +18,7 @@ export var usersReducer = (state = INITIAL_STATE, action:any) => {
     switch (action.type) {
         case Actions.SETUSERS:
             return {
-                users: [...action.payload]
+                users: [...action.payload.users]
             }
         case Actions.EDITUSER:
             old = [...state.users];

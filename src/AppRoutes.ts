@@ -1,8 +1,8 @@
 export const AppRoutes = {
-    login: '/login',
+    login: '/',
     signup: '/singup',
     notFound :"/error-404",
-    users: '/users',
+    users: '/',
     edit: '/edit-user',
     add: '/add-user'
 }

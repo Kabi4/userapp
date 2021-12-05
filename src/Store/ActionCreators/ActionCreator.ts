@@ -13,15 +13,16 @@ interface IUser{
 
 export interface ILogin {
     name: string,
-    token: string
+    token: string,
+    dob: string
 }
 
-export const LOGIN = ({name,token}:ILogin)=>{
+export const LOGIN = ({name,token,dob}:ILogin)=>{
     return{
         type: Actions.LOGIN,
         payload: {
             name,
-            token
+            token,dob
         }
     }
 }
